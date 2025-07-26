@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config.php';
+include 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     if ($stmt->get_result()->num_rows > 0) {
         $_SESSION['error'] = "Email already registered.";
-        header("Location: index.php");
+        header("Location: register.php");
         exit();
     }
     $stmt->close();
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("si", $address, $accountID);
         if ($stmt->execute()) {
             $_SESSION['success'] = "Registration successful! Please log in.";
-            header("Location: index.php");
+            header("Location: login.php");
             exit();
         } else {
             $_SESSION['error'] = "Error saving address.";
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "Error creating account.";
     }
     $stmt->close();
-    header("Location: index.php");
+    header("Location: register.php");
     exit();
 }
 $conn->close();

@@ -1,5 +1,6 @@
 <?php
-session_start(); // Start session for user authentication
+session_start();
+include 'connectdb.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,28 +31,31 @@ session_start(); // Start session for user authentication
                             <a class="nav-link" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Shop</a>
+                            <a class="nav-link" href="shop.php">Shop</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Men</a>
+                            <a class="nav-link" href="shop.php?category=men">Men</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Women</a>
+                            <a class="nav-link" href="shop.php?category=women">Women</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo isset($_SESSION['user_id']) ? 'profile.php' : 'login.php'; ?>">Profile</a>
                         </li>
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="profile.php">Profile</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="logout.php">Logout</a>
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
-                                <a class="nav-link active" href="index.php">Login/Register</a>
+                                <a class="nav-link" href="login.php">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="register.php">Register</a>
                             </li>
                         <?php endif; ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Cart</a>
+                            <a class="nav-link" href="cart.php">Cart</a>
                         </li>
                     </ul>
                 </div>

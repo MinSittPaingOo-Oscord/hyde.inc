@@ -7,7 +7,7 @@ body {
 .card-header {
     border-radius: 10px 10px 0 0;
 }
-.btn-primary, .btn-success {
+.btn-primary, .btn-success, .btn-warning {
     transition: background-color 0.3s;
 }
 .btn-primary:hover {
@@ -16,10 +16,27 @@ body {
 .btn-success:hover {
     background-color: #218838;
 }
+.btn-warning:hover {
+    background-color: #e0a800;
+}
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
 }
 footer {
     margin-top: 50px;
+}
+.profile-card {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.profile-header {
+    background: linear-gradient(135deg, #6c757d, #343a40);
+    color: white;
+}
+.order-table th, .order-table td {
+    vertical-align: middle;
+}
+.alert {
+    margin-bottom: 20px;
 }

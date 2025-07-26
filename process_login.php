@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'config.php';
+include 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -15,11 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         if (password_verify($passcode, $user['passcode'])) {
-            // Successful login
             $_SESSION['user_id'] = $user['accountID'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['role_id'] = $user['roleID'];
-            header("Location: profile.php"); // Redirect to profile page
+            header("Location: profile.php");
             exit();
         } else {
             $_SESSION['error'] = "Invalid password.";
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = "No account found with that email.";
     }
     $stmt->close();
-    header("Location: index.php"); // Redirect back to login page with error
+    header("Location: login.php");
     exit();
 }
 $conn->close();

@@ -1,38 +1,62 @@
-<?php include "includes/db.php"; ?>
-<?php include "includes/header.php"; ?>
 <?php
-session_start();
-if (isset($_POST['login'])) {
-    $email = $conn->real_escape_string($_POST['email']);
-    $password = $_POST['password'];
-
-    $result = $conn->query("SELECT * FROM users WHERE email = '$email'");
-    $user = $result->fetch_assoc();
-
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user'] = $user;
-        echo "<script>alert('Login successful!'); window.location='index.php';</script>";
-    } else {
-        echo "<div class='text-center text-danger'>Invalid email or password</div>";
-    }
-}
+include 'connectdb.php';
+include 'includes/header.php';
 ?>
 
 <div class="container mt-5">
-  <h2 class="text-center mb-4">Login</h2>
-  <form action="login.php" method="post" class="mx-auto" style="max-width: 400px;">
-    <div class="mb-3">
-      <label>Email</label>
-      <input type="email" name="email" class="form-control" required>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Login to Hyde Fashion</h4>
+                </div>
+                <div class="card-body">
+                    <?php if (isset($_SESSION['error'])): ?>
+                        <div class="alert alert-danger"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
+                    <?php endif; ?>
+                    <form id="loginForm" action="process_login.php" method="POST">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" name="passcode" required>
+                        </div>
+                        <div id="loginError" class="text-danger mb-3" style="display: none;"></div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <p>Don't have an account? <a href="register.php">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-      <label>Password</label>
-      <input type="password" name="password" class="form-control" required>
-    </div>
-    <button type="submit" name="login" class="btn btn-success w-100">Login</button>
-  </form>
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+        var email = $('#loginEmail').val();
+        var password = $('#loginPassword').val();
+        var error = '';
 
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            error = 'Please enter a valid email address.';
+        } else if (!password) {
+            error = 'Please enter a password.';
+        }
 
-<?php include "includes/footer.php"; ?>
+        if (error) {
+            $('#loginError').text(error).show();
+        } else {
+            $('#loginError').hide();
+            this.submit();
+        }
+    });
+});
+</script>
+
+<?php include 'includes/footer.php'; ?>
